@@ -1,20 +1,13 @@
-session = {
-	airport: '---',
-	resort: '-j--',
-	month: 'asd',
-	persons: '-d--',
-	nigths: '---'
+const x = {
+	name: 'Acar Hotel',
+	airport: 'Mineralnye.Vody',
+	resort: 'Alanya',
+	persons: 1,
+	date: '15 мар.',
+	prices: [{ price: '38092', date: 1643807205288 }],
+	lastUpdate: '02.02.2022, 16:06:45',
+	_id: new ObjectId("61fa81e51d5d1eee5424da27"),
+	__v: 0
 }
 
-// console.log('nigths' in session)
-let x
-const keys = Object.keys(session);
-keys.forEach(element => {
-	// console.log(session[element]);
-	if (session[element] === '---') {
-		x = false
-	} else {
-		x = true
-	}
-})
-console.log(x)
+console.log(x._id)

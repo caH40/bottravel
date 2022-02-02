@@ -12,9 +12,6 @@ const main = [
 		{ text: 'Количество ночей', callback_data: 'nigths' }
 	],
 	[
-		{ text: 'Изменить данные', callback_data: 'edit' }
-	],
-	[
 		{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
 	]
 ];

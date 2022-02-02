@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const addToDb = require('./addtodb');
 
-async function parse(url) {
+async function parse(url, ctx) {
 	const browser = await puppeteer.launch();
 	// const browser = await puppeteer.launch({ headless: false, slowMo: 200, devtools: true });
 	const page = await browser.newPage();
@@ -29,7 +29,7 @@ async function parse(url) {
 		return result;
 	});
 
-	await addToDb(resultArr);
+	await addToDb(resultArr, ctx);
 	await browser.close();
 	return resultArr;
 }

@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
 const keyboards = require('./app_modules/keyboards');
+const parse = require('./app_modules/parse');
+const request = require('./app_modules/request');
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -38,14 +40,6 @@ bot.help(async (ctx) => {
 
 // главное меню
 bot.command('/main', async (ctx) => {
-	// обнуление сессии
-	// urlObj = {
-	// 	airport: '---',
-	// 	resort: '---',
-	// 	month: '---',
-	// 	persons: '---',
-	// 	nigths: '---'
-	// };
 	ctx.session = {
 		airport: '---',
 		resort: '---',
@@ -68,9 +62,6 @@ bot.command('/main', async (ctx) => {
 			{ text: 'Количество ночей', callback_data: 'nigths' }
 		],
 		[
-			{ text: 'Изменить данные', callback_data: 'edit' }
-		],
-		[
 			{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
 		]
 	];
@@ -85,7 +76,7 @@ bot.on('callback_query', async (ctx) => {
 	ctx.session.main ??= keyboards.main;
 	ctx.session.creatM = '@' + userName;
 	const cbData = ctx.update.callback_query.data; // callback_data
-	console.log(cbData)
+
 	ctx.deleteMessage(ctx.update.callback_query.message.message_id);
 	if (cbData === 'airport') {
 		await ctx.reply('Город вылета:', { reply_markup: { inline_keyboard: keyboards.airport } });
@@ -134,6 +125,8 @@ bot.on('callback_query', async (ctx) => {
 			} else {
 				let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-17${ctx.session.month}-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-0-kids-1..5-stars?sort_by=price,asc&flex_dates=2`;
 				console.log(url);
+				// console.log(ctx.update.callback_query);
+				await parse(url, ctx)
 			}
 		} catch (error) {
 			console.log(error)
@@ -146,10 +139,6 @@ bot.on('callback_query', async (ctx) => {
 	async function output() {
 		await ctx.reply('Выберите блок заполнения', { reply_markup: { inline_keyboard: ctx.session.main } }).catch((error) => console.log(error))
 	}
-	// редактирование создаваемого объявления
-	if (cbData === 'edit') {
-		output()
-	};
 	// обработка данных всех подменю
 	if (cbData.includes('airport_')) {
 		ctx.session.main[0][0].text = 'Город вылета ✔️';
@@ -172,24 +161,11 @@ bot.on('callback_query', async (ctx) => {
 		ctx.session.main[2][0].text = 'Количество ночей ✔️';
 		output();
 	};
-
-
-
-
-
-
-
-
-	// let url = `https://level.travel/search/${airport}-RU-to-${Alanya}-TR-departure-17.03.2022-for-7-nights-1-adults-0-kids-1..5-stars?sort_by=price,asc&flex_dates=2`;
-
-
-
-
 })
 
-
-
-
+bot.command('/request', async (ctx) => {
+	await request(ctx)
+})
 
 
 
