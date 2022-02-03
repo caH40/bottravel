@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
 const keyboards = require('./app_modules/keyboards');
-const parse = require('./app_modules/parse');
+const parse = require('./parse/parse');
 const request = require('./app_modules/request');
+const updateDb = require('./app_modules/updateDb');
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -43,7 +44,7 @@ bot.command('/main', async (ctx) => {
 	ctx.session = {
 		airport: '---',
 		resort: '---',
-		month: '---',
+		kids: '---',
 		persons: '---',
 		nigths: '---'
 	}
@@ -54,9 +55,8 @@ bot.command('/main', async (ctx) => {
 			{ text: 'Курорт', callback_data: 'resort' }
 		],
 		[
-			{ text: 'Планируемый месяц', callback_data: 'month' },
-			{ text: 'Количество человек', callback_data: 'persons' }
-
+			{ text: 'Количество взрослых', callback_data: 'persons' },
+			{ text: 'Количество детей', callback_data: 'kids' }
 		],
 		[
 			{ text: 'Количество ночей', callback_data: 'nigths' }
@@ -77,18 +77,18 @@ bot.on('callback_query', async (ctx) => {
 	ctx.session.creatM = '@' + userName;
 	const cbData = ctx.update.callback_query.data; // callback_data
 
-	ctx.deleteMessage(ctx.update.callback_query.message.message_id);
+	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
 	if (cbData === 'airport') {
 		await ctx.reply('Город вылета:', { reply_markup: { inline_keyboard: keyboards.airport } });
 	}
 	if (cbData === 'resort') {
 		await ctx.reply('Курортный город:', { reply_markup: { inline_keyboard: keyboards.resort } });
 	}
-	if (cbData === 'month') {
-		await ctx.reply('Планируемый месяц поездки:', { reply_markup: { inline_keyboard: keyboards.month } });
+	if (cbData === 'kids') {
+		await ctx.reply('Количество детей:', { reply_markup: { inline_keyboard: keyboards.kids } });
 	}
 	if (cbData === 'persons') {
-		await ctx.reply('Количество человек:', { reply_markup: { inline_keyboard: keyboards.persons } });
+		await ctx.reply('Количество взрослых:', { reply_markup: { inline_keyboard: keyboards.persons } });
 	}
 	if (cbData === 'nigths') {
 		await ctx.reply('Количество ночей:', { reply_markup: { inline_keyboard: keyboards.nights } });
@@ -104,7 +104,7 @@ bot.on('callback_query', async (ctx) => {
 	}
 	await handlerData(ctx, 'airport_');
 	await handlerData(ctx, 'resort_');
-	await handlerData(ctx, 'month_');
+	await handlerData(ctx, 'kids_');
 	await handlerData(ctx, 'persons_');
 	await handlerData(ctx, 'nigths_');
 
@@ -123,10 +123,16 @@ bot.on('callback_query', async (ctx) => {
 			if (condition) {
 				await ctx.reply('Не все поля заполнены!!!', { reply_markup: { inline_keyboard: keyboards.back } })
 			} else {
-				let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-17${ctx.session.month}-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-0-kids-1..5-stars?sort_by=price,asc&flex_dates=2`;
-				console.log(url);
+
+
 				// console.log(ctx.update.callback_query);
-				await parse(url, ctx)
+				for (let month = 2; month < 5; month++) {
+					for (let day = 2; day < 30; day = day + 2) {
+						let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-${day}.0${month}.2022-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-${ctx.session.kids}-kids-1..5-stars?sort_by=price,asc&flex_dates=2`;
+						console.log(url);
+						await parse(url, ctx)
+					}
+				}
 			}
 		} catch (error) {
 			console.log(error)
@@ -148,15 +154,14 @@ bot.on('callback_query', async (ctx) => {
 		ctx.session.main[0][1].text = 'Курорт ✔️';
 		output();
 	};
-	if (cbData.includes('month_')) {
-		ctx.session.main[1][0].text = 'Планируемый месяц ✔️';
-		output();
-	};
 	if (cbData.includes('persons_')) {
-		ctx.session.main[1][1].text = 'Количество человек ✔️';
+		ctx.session.main[1][0].text = 'Количество взрослых ✔️';
 		output();
 	};
-
+	if (cbData.includes('kids_')) {
+		ctx.session.main[1][1].text = 'Количество детей ✔️';
+		output();
+	};
 	if (cbData.includes('nigths_')) {
 		ctx.session.main[2][0].text = 'Количество ночей ✔️';
 		output();
@@ -167,15 +172,17 @@ bot.command('/request', async (ctx) => {
 	await request(ctx)
 })
 
-
-
-
-
-
-
+const secondsInThirtyMinutes = 60000;
 bot.launch()
 	.then(async () => {
-		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...');
+		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...')
+			.catch(error => console.log(error));
+	})
+	.then(async () => {
+		setInterval(async () => {
+			await updateDb()
+				.catch(error => console.log(error));
+		}, secondsInThirtyMinutes);
 	})
 	.catch(error => console.log(error));
 

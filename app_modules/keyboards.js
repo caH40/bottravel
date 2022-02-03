@@ -4,9 +4,8 @@ const main = [
 		{ text: 'Курорт', callback_data: 'resort' }
 	],
 	[
-		{ text: 'Планируемый месяц', callback_data: 'month' },
-		{ text: 'Количество человек', callback_data: 'persons' }
-
+		{ text: 'Количество взрослых', callback_data: 'persons' },
+		{ text: 'Количество детей', callback_data: 'kids' }
 	],
 	[
 		{ text: 'Количество ночей', callback_data: 'nigths' }
@@ -26,16 +25,6 @@ const resort = [
 		{ text: 'Аланья', callback_data: 'resort_Alanya' }
 	]
 ];
-const month = [
-	[
-		{ text: 'Март', callback_data: 'month_.03.2022' },
-		{ text: 'Апрель', callback_data: 'month_.04.2022' }
-	],
-	[
-		{ text: 'Май', callback_data: 'month_.05.2022' },
-		{ text: 'Июнь', callback_data: 'month_.06.2022' }
-	]
-];
 const persons = [
 	[
 		{ text: '1 взрослый', callback_data: 'persons_1' },
@@ -44,6 +33,16 @@ const persons = [
 	[
 		{ text: '3 взрослых', callback_data: 'persons_3' },
 		{ text: '4 взрослых', callback_data: 'persons_4' }
+	]
+];
+const kids = [
+	[
+		{ text: 'без детей', callback_data: 'kids_0' },
+		{ text: '1 ребенок', callback_data: 'kids_1' }
+	],
+	[
+		{ text: '2 детей', callback_data: 'kids_2' },
+		{ text: '3 детей', callback_data: 'kids_.3' }
 	]
 ];
 const nights = [
@@ -67,7 +66,7 @@ const back = [[{ text: 'Продолжить ввод данных', callback_da
 module.exports.main = main;
 module.exports.airport = airport;
 module.exports.resort = resort;
-module.exports.month = month;
 module.exports.persons = persons;
+module.exports.kids = kids;
 module.exports.nights = nights;
 module.exports.back = back;

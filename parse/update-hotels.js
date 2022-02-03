@@ -4,7 +4,6 @@ async function addToDb(resultArr, url) {
 	const dateString = new Date().toLocaleString();
 	const dateNumber = new Date().getTime();
 	let hotelsId = [];
-	let hotelNew;
 	for (let i = 0; i < resultArr.length; i++) {
 		let date = resultArr[i].info.match(/\n(.*)/)[1];
 		let price = resultArr[i].price.match(/[0-9]/g).join('');
@@ -23,24 +22,15 @@ async function addToDb(resultArr, url) {
 			}
 			//добавление отелей
 		} else {
-			hotelNew = await Hotel({
-				name: resultArr[i].name,
-				url: url,
-				airport: ctx.session.airport,
-				resort: ctx.session.resort,
-				night: ctx.session.nights,
-				persons: ctx.session.persons,
-				persons: ctx.session.kids,
-				date: date,
-				prices: priceNew,
-				lastUpdate: dateString
-			})
-			//saved содержит все сохраненные документы
-			let hotelsFromDb = await hotelNew.save().then(console.log('added to database...'));
-			hotelsId.push(hotelsFromDb._id);
+			console.log('Отель куда то исчез из базы...', resultArr[i])
 		}
 	}
-	return hotelsId
 }
 
 module.exports = addToDb;
+
+//пока работает только с 1 взрослым, 7 дней
+// необходимо вытащить из урла данные для поиска уникального документа Hotel
+// airport,resort,night,persons,kids
+
+// https://level.travel/search/Mineralnye.Vody-RU-to-Alanya-TR-departure-10.02.2022-for-7-nights-1-adults-0-kids-1..5-stars?sort_by=price,asc&flex_dates=2
