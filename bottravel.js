@@ -3,12 +3,11 @@ const { Telegraf, session } = require('telegraf');
 const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
-const getHotelName = require('./app_modules/fromdb');
+const getHotelName = require('./app_modules/keyboard-hotels');
 const keyboards = require('./app_modules/keyboards');
-const request = require('./app_modules/request');
-const handlerMain = require('./app_modules/menu/handler-main');
-
-
+const getKeyboardHotels = require('./app_modules/keyboard-hotels');
+const tracking = require('./app_modules/request');
+const handlerSearch = require('./app_modules/menu/handler-search');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -42,47 +41,25 @@ bot.help(async (ctx) => {
 
 // главное меню
 bot.command('/main', async (ctx) => {
-	ctx.session = {
-		airport: '---',
-		resort: '---',
-		kids: '---',
-		persons: '---',
-		nigths: '---'
-	}
-	//при замене значения из модуля на keyboardMain, смешиваются ответы из разных сессий!!
-	ctx.session.main = [
-		[
-			{ text: 'Город вылета', callback_data: 'airport' },
-			{ text: 'Курорт', callback_data: 'resort' }
-		],
-		[
-			{ text: 'Количество взрослых', callback_data: 'persons' },
-			{ text: 'Количество детей', callback_data: 'kids' }
-		],
-		[
-			{ text: 'Количество ночей', callback_data: 'nigths' }
-		],
-		[
-			{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
-		]
-	];
-	await ctx.deleteMessage(ctx.message.message_id);
-	await ctx.reply('Заполните форму запроса:', { reply_markup: { inline_keyboard: keyboards.main } });
+	await ctx.reply('Заполните форму запроса:', { reply_markup: { inline_keyboard: keyboards.start } });
 });
 
-//===================================================================================================
-// обработка всех нажатий инлайн кнопок
-bot.on('callback_query', async (ctx) => {
-	await handlerMain(ctx)
-})
-
-bot.command('/request', async (ctx) => {
-	await request();
-	// const keyboardHotels = await keyboards.hotel()
+bot.command('/tracking', async (ctx) => {
+	await tracking(ctx);
+	// const keyboardHotels = await getKeyboardHotels()
 	// await ctx.reply('Hotels', { reply_markup: { inline_keyboard: keyboardHotels } })
 })
 
-const secondsInThirtyMinutes = 60000;
+// обработка всех нажатий инлайн кнопок
+bot.on('callback_query', async (ctx) => {
+	const cbData = ctx.update.callback_query.data; // callback_data
+	await handlerSearch(ctx).catch(error => console.log(error));
+	// await handlerRequest(ctx).catch(error => console.log(error));
+})
+
+
+
+
 bot.launch()
 	.then(async () => {
 		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...')

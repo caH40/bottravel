@@ -1,6 +1,7 @@
+// запрос наименований отелей из БД
 const Hotel = require('../models/Hotel');
 
-async function getHotelName() {
+async function getKeyboardHotels() {
 	const hotels = await Hotel.find();
 	let hotelNames = [];
 	hotels.forEach(element => {
@@ -10,8 +11,12 @@ async function getHotelName() {
 			hotelNames.push(element.name);
 		}
 	})
-	return hotelNames
+	let keysArr = [];
+	hotelNames.forEach(element => {
+		keysArr.push([{ text: element, callback_data: element }])
+	});
+	return keysArr;
 }
 
 
-module.exports = getHotelName;
+module.exports = getKeyboardHotels;
