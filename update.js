@@ -14,6 +14,9 @@ mongoose.connect(process.env.MONGODB)
 	});
 
 const millisecondsInFifteenSecond = 15000;
+const millisecondsInTwentyMinutes = 300000;
+// const millisecondsInTwentyMinutes = 1200000;
+
 async function updateDb() {
 	try {
 		const urls = await Url.find();
@@ -30,4 +33,7 @@ async function updateDb() {
 	}
 }
 
-updateDb()
+setInterval(() => {
+	updateDb()
+}, millisecondsInTwentyMinutes);
+

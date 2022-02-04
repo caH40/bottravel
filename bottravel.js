@@ -4,9 +4,8 @@ const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
 const keyboards = require('./app_modules/keyboards');
-const parse = require('./parse/parse');
 const request = require('./app_modules/request');
-const updateDb = require('./app_modules/updateDb');
+const addUrl = require('./app_modules/add-url');
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -126,11 +125,11 @@ bot.on('callback_query', async (ctx) => {
 
 
 				// console.log(ctx.update.callback_query);
-				for (let month = 2; month < 5; month++) {
-					for (let day = 2; day < 30; day = day + 2) {
-						let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-${day}.0${month}.2022-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-${ctx.session.kids}-kids-1..5-stars?sort_by=price,asc&flex_dates=2`;
+				for (let month = 2; month < 4; month++) {
+					for (let day = 1; day < 32; day++) {
+						let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.2022-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-${ctx.session.kids}-kids-1..5-stars?sort_by=price,asc`;
 						console.log(url);
-						await parse(url, ctx)
+						await addUrl(url, ctx, day, month)
 					}
 				}
 			}
@@ -177,12 +176,6 @@ bot.launch()
 	.then(async () => {
 		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...')
 			.catch(error => console.log(error));
-	})
-	.then(async () => {
-		setInterval(async () => {
-			await updateDb()
-				.catch(error => console.log(error));
-		}, secondsInThirtyMinutes);
 	})
 	.catch(error => console.log(error));
 

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const urlSchema = new Schema({
-	url: { type: String },
+	url: { type: String, unique: true, required: true },
 	lastUpdate: { type: String }
 });
 

@@ -1,19 +1,19 @@
-const x = [
-	{
-		name: 'Acar Hotel',
-	},
-	{
-		name: 'Afasf'
-	},
-	{
-		name: 'Acar asds',
-	},
-	'asd'
-]
+// const n = 3;
+// const str1 = n.toString();
 
-// console.log(x._id)
+// console.log(str1.padStart(2, '0'));
 
-//проверит добавление push в строку
+const url = 'https://level.travel/search/Mineralnye.Vody-RU-to-Alanya-TR-departure-31.02.2022-for-7-nights-1-adults-0-kids-1..5-stars?sort_by=price,asc';
 
-console.log(x.includes('asd'))
+const result = url.match(/()/)
+
+console.log(result);
+
+
+// const day = new Date().getDate();
+// const month = new Date().getMonth() + 1;
+
+
+// console.log(day, month);
+
 
