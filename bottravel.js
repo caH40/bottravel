@@ -6,7 +6,7 @@ const text = require('./app_modules/text');
 const getHotelName = require('./app_modules/fromdb');
 const keyboards = require('./app_modules/keyboards');
 const request = require('./app_modules/request');
-const sendRequest = require('./app_modules/send-request');
+const handlerMain = require('./app_modules/menu/handler-main');
 
 
 
@@ -73,75 +73,11 @@ bot.command('/main', async (ctx) => {
 //===================================================================================================
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
-	const userName = ctx.update.callback_query.from.username;
-	ctx.session.main ??= keyboards.main;
-	ctx.session.creatM = '@' + userName;
-	const cbData = ctx.update.callback_query.data; // callback_data
-
-	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
-	if (cbData === 'airport') {
-		await ctx.reply('Город вылета:', { reply_markup: { inline_keyboard: keyboards.airport } });
-	}
-	if (cbData === 'resort') {
-		await ctx.reply('Курортный город:', { reply_markup: { inline_keyboard: keyboards.resort } });
-	}
-	if (cbData === 'kids') {
-		await ctx.reply('Количество детей:', { reply_markup: { inline_keyboard: keyboards.kids } });
-	}
-	if (cbData === 'persons') {
-		await ctx.reply('Количество взрослых:', { reply_markup: { inline_keyboard: keyboards.persons } });
-	}
-	if (cbData === 'nigths') {
-		await ctx.reply('Количество ночей:', { reply_markup: { inline_keyboard: keyboards.nights } });
-	}
-	// обработка данных ввода
-
-	async function handlerData(ctx, dataInput) {
-		if (ctx.update.callback_query.data.includes(dataInput)) {
-			const data = ctx.update.callback_query.data;
-			const dataKey = dataInput.split('_').join('')
-			ctx.session[dataKey] = data.split(dataInput).join('');
-		}
-	}
-	await handlerData(ctx, 'airport_');
-	await handlerData(ctx, 'resort_');
-	await handlerData(ctx, 'kids_');
-	await handlerData(ctx, 'persons_');
-	await handlerData(ctx, 'nigths_');
-
-	// отправка итогового объявления на канал объявлений
-	if (cbData === 'sendRequest') {
-		await sendRequest(ctx);
-	};
-
-	async function output() {
-		await ctx.reply('Выберите блок заполнения', { reply_markup: { inline_keyboard: ctx.session.main } }).catch((error) => console.log(error))
-	}
-	// обработка данных всех подменю
-	if (cbData.includes('airport_')) {
-		ctx.session.main[0][0].text = 'Город вылета ✔️';
-		output();
-	};
-	if (cbData.includes('resort_')) {
-		ctx.session.main[0][1].text = 'Курорт ✔️';
-		output();
-	};
-	if (cbData.includes('persons_')) {
-		ctx.session.main[1][0].text = 'Количество взрослых ✔️';
-		output();
-	};
-	if (cbData.includes('kids_')) {
-		ctx.session.main[1][1].text = 'Количество детей ✔️';
-		output();
-	};
-	if (cbData.includes('nigths_')) {
-		ctx.session.main[2][0].text = 'Количество ночей ✔️';
-		output();
-	};
+	await handlerMain(ctx)
 })
 
 bot.command('/request', async (ctx) => {
-	await request(ctx);
+	await request();
 	// const keyboardHotels = await keyboards.hotel()
 	// await ctx.reply('Hotels', { reply_markup: { inline_keyboard: keyboardHotels } })
 })
