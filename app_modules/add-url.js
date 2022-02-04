@@ -14,7 +14,7 @@ async function addUrl(url, ctx, day, month) {
 	}
 	//если уже есть url в базе, то не добавлять
 	if (urlSearch || incorrectDate) {
-		console.log('url есть в БД, или некорректная дата')
+		// console.log('url есть в БД, или некорректная дата')
 	}
 	else {
 		const urlNew = await new Url({ url: url, lastUpdate: dateString });

@@ -9,7 +9,7 @@ async function parse(url) {
 		const page = await browser.newPage();
 		await page.setViewport({ width: 1200, height: 3000, deviceScaleFactor: 1 });
 		await page.goto(url)
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(4000);
 
 		const resultArr = await page.evaluate(async () => {
 			let result = [];
@@ -30,7 +30,7 @@ async function parse(url) {
 			})
 			return result;
 		});
-		await updateHotels(resultArr);
+		await updateHotels(resultArr, url);
 		await browser.close();
 		// return resultArr;
 	} catch (error) {
