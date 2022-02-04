@@ -1,3 +1,5 @@
+const getHotelName = require('./fromdb');
+
 const main = [
 	[
 		{ text: 'Город вылета', callback_data: 'airport' },
@@ -48,15 +50,18 @@ const kids = [
 const nights = [
 	[
 		{ text: '7 ночей', callback_data: 'nigths_7' },
-		{ text: '8 ночей', callback_data: 'nigths_8' },
-		{ text: '9 ночей', callback_data: 'nigths_9' }
-	],
-	[
-		{ text: '10 ночей', callback_data: 'nigths_10' },
-		{ text: '11 ночей', callback_data: 'nigths_11' },
-		{ text: '12 ночей', callback_data: 'nigths_12' }
+		{ text: '14 ночей', callback_data: 'nigths_14' },
+
 	]
 ];
+async function hotel() {
+	const hotelNames = await getHotelName();
+	let keysArr = [];
+	hotelNames.forEach(element => {
+		keysArr.push([{ text: element, callback_data: element }])
+	});
+	return keysArr;
+}
 
 const back = [[{ text: 'Продолжить ввод данных', callback_data: 'edit' }]];
 
@@ -69,4 +74,5 @@ module.exports.resort = resort;
 module.exports.persons = persons;
 module.exports.kids = kids;
 module.exports.nights = nights;
+module.exports.hotel = hotel;
 module.exports.back = back;

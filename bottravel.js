@@ -3,9 +3,11 @@ const { Telegraf, session } = require('telegraf');
 const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
+const getHotelName = require('./app_modules/fromdb');
 const keyboards = require('./app_modules/keyboards');
 const request = require('./app_modules/request');
-const addUrl = require('./app_modules/add-url');
+const sendRequest = require('./app_modules/send-request');
+
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -107,38 +109,10 @@ bot.on('callback_query', async (ctx) => {
 	await handlerData(ctx, 'persons_');
 	await handlerData(ctx, 'nigths_');
 
-
 	// отправка итогового объявления на канал объявлений
 	if (cbData === 'sendRequest') {
-
-		try {
-			// проверка заполнения всех полей (поиск '---')
-			let condition = false;
-			const keys = Object.keys(ctx.session);
-			keys.forEach(element => {
-				condition = condition || (ctx.session[element] === '---')
-			})
-
-			if (condition) {
-				await ctx.reply('Не все поля заполнены!!!', { reply_markup: { inline_keyboard: keyboards.back } })
-			} else {
-
-
-				// console.log(ctx.update.callback_query);
-				for (let month = 2; month < 4; month++) {
-					for (let day = 1; day < 32; day++) {
-						let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.2022-for-${ctx.session.nigths}-nights-${ctx.session.persons}-adults-${ctx.session.kids}-kids-1..5-stars?sort_by=price,asc`;
-						await addUrl(url, ctx, day, month)
-					}
-				}
-			}
-		} catch (error) {
-			console.log(error)
-		}
-
+		await sendRequest(ctx);
 	};
-
-
 
 	async function output() {
 		await ctx.reply('Выберите блок заполнения', { reply_markup: { inline_keyboard: ctx.session.main } }).catch((error) => console.log(error))
@@ -167,7 +141,9 @@ bot.on('callback_query', async (ctx) => {
 })
 
 bot.command('/request', async (ctx) => {
-	await request(ctx)
+	await request(ctx);
+	// const keyboardHotels = await keyboards.hotel()
+	// await ctx.reply('Hotels', { reply_markup: { inline_keyboard: keyboardHotels } })
 })
 
 const secondsInThirtyMinutes = 60000;

@@ -1,6 +1,7 @@
 const Url = require('../models/Url');
 
 async function addUrl(url, ctx, day, month) {
+	console.log(url);
 	const dateString = new Date().toLocaleString();
 	const urlSearch = await Url.findOne({ url: url });
 	//фильтрация недействительной даты (дата ранее сегодняшнего дня)
