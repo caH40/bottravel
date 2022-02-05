@@ -7,3 +7,4 @@ if (user) {
 		trackId.push(hotel._id)
 		await User.findOneAndUpdate({ userId: ctx.update.callback_query.from.id }, { $set: { trackId: trackId } });
 	}
+}

@@ -9,7 +9,7 @@ async function tracking(ctx, filter) {
 			let hotelsFiltered = '';
 			let hotelsSorted = hotels.sort((a, b) => a.prices[a.prices.length - 1].price - b.prices[b.prices.length - 1].price)
 			for (let i = 0; i < 20; i++) {
-				const nameHotel = hotelsSorted[i].name;
+				const nameHotel = hotelsSorted[i].hotel;
 				const nameUrl = hotelsSorted[i].url;
 				const nameDate = hotelsSorted[i].date;
 				const nameNight = hotelsSorted[i].night;

@@ -18,7 +18,7 @@ async function parse(url) {
 			const thead = await document.querySelectorAll(selector);
 			thead.forEach(element => {
 				const selectorHotelName = 'div > div > div > div:nth-child(2) > div > div:nth-child(2) > a > span';
-				let name = element.querySelector(selectorHotelName).innerText;
+				let hotel = element.querySelector(selectorHotelName).innerText;
 
 				const selectorHotelPrice = 'div > div > div > div:nth-child(2) > div > div:nth-child(5) > div> div > a > span';
 				let price = element.querySelector(selectorHotelPrice).innerText;
@@ -26,7 +26,7 @@ async function parse(url) {
 				const selectorHotelInfo = 'div > div > div > div:nth-child(2) > div > div:nth-child(5) > div > div:nth-child(2) > div > div ';
 				let info = element.querySelector(selectorHotelInfo).innerText;
 
-				result.push({ name, price, info })
+				result.push({ hotel, price, info })
 			})
 			return result;
 		});

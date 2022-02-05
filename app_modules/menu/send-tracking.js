@@ -3,22 +3,27 @@ const Hotel = require('../../models/Hotel');
 
 async function sendRequest(ctx) {
 	try {
-		console.log(ctx.session)
+		// console.log(ctx.session)
 		const filter = {};
-		if (ctx.session.hotelTracking) { filter.name = ctx.session.hotelTracking }
+		if (ctx.session.hotelTracking) { filter.hotel = ctx.session.hotelTracking }
 		if (ctx.session.airportTracking) { filter.airport = ctx.session.airportTracking }
 		if (ctx.session.resortTracking) { filter.resort = ctx.session.resortTracking }
 		if (ctx.session.nightsTracking) { filter.night = ctx.session.nightsTracking }
 		if (ctx.session.personsTracking) { filter.persons = ctx.session.personsTracking }
 		if (ctx.session.kidsTracking) { filter.kids = ctx.session.kidsTracking }
-		console.log(filter);
 		const hotels = await Hotel.find(filter);
 		//проверка наличия документов в коллекции hotels
 		if (hotels[0]) {
 			let hotelsFiltered = '';
 			let hotelsSorted = hotels.sort((a, b) => a.prices[a.prices.length - 1].price - b.prices[b.prices.length - 1].price)
-			for (let i = 0; i < 20; i++) {
-				const nameHotel = hotelsSorted[i].name;
+			let iteration;
+			if (hotelsSorted.length < 15) {
+				iteration = hotelsSorted.length
+			} else {
+				iteration = 15
+			}
+			for (let i = 0; i < iteration; i++) {
+				const nameHotel = hotelsSorted[i].hotel;
 				const nameUrl = hotelsSorted[i].url;
 				const nameDate = hotelsSorted[i].date;
 				const nameNight = hotelsSorted[i].night;

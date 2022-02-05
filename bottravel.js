@@ -46,13 +46,6 @@ bot.command('/main', async (ctx) => {
 	await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
 });
 
-bot.command('/tracking', async (ctx) => {
-	let filter = {};
-	filter.night = 14
-	filter.airport = "Moscow"
-	await tracking(ctx, filter);
-})
-
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
 	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));

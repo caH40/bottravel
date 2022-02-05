@@ -15,21 +15,21 @@ async function addToDb(resultArr, url) {
 			let price = resultArr[i].price.match(/[0-9]/g).join('');
 			let priceNew = { price: price, date: dateNumber }
 			//обновление отелей
-			let hotel = await Hotel.findOne({ name: resultArr[i].name, date: date });
+			let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
 			if (hotel) {
 				console.log('обновление цены');
 				for (let i = 0; i < resultArr.length; i++) {
-					let hotel = await Hotel.findOne({ name: resultArr[i].name, date: date });
+					let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
 					hotel.prices.push(priceNew)
 					await Hotel.findOneAndUpdate(
-						{ name: resultArr[i].name },
+						{ hotel: resultArr[i].hotel },
 						{ $set: { lastUpdate: dateString, prices: hotel.prices } }
 					);
 				}
 				//добавление отелей
 			} else {
 				hotelNew = await Hotel({
-					name: resultArr[i].name,
+					hotel: resultArr[i].hotel,
 					url: url,
 					airport: airport,
 					resort: resort,

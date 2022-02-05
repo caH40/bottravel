@@ -6,7 +6,6 @@ const commands =
 	`
 /help - помощь
 /main - главное меню
-/tracking - опрос отслеживаемых отелей
 /changes - опрос изменений цен
 /description - описание сервиса
 /delete - удаление

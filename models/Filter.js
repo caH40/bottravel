@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const hotelSchema = new Schema({
+const FilterSchema = new Schema({
 	hotel: { type: String },
 	url: { type: String },
 	airport: { type: String },
