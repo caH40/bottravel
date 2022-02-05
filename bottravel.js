@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const text = require('./app_modules/text');
 const getHotelName = require('./app_modules/keyboard-hotels');
 const keyboards = require('./app_modules/keyboards');
-const getKeyboardHotels = require('./app_modules/keyboard-hotels');
 const tracking = require('./app_modules/request');
 const handlerSearch = require('./app_modules/menu/handler-search');
+const handlerTracking = require('./app_modules/menu/handler-tracking');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -41,20 +41,25 @@ bot.help(async (ctx) => {
 
 // главное меню
 bot.command('/main', async (ctx) => {
-	await ctx.reply('Заполните форму запроса:', { reply_markup: { inline_keyboard: keyboards.start } });
+	ctx.session = {};
+	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
+	await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
 });
 
 bot.command('/tracking', async (ctx) => {
-	await tracking(ctx);
-	// const keyboardHotels = await getKeyboardHotels()
-	// await ctx.reply('Hotels', { reply_markup: { inline_keyboard: keyboardHotels } })
+	let filter = {};
+	filter.night = 14
+	filter.airport = "Moscow"
+	await tracking(ctx, filter);
 })
 
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
-	const cbData = ctx.update.callback_query.data; // callback_data
+	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
+	// console.log(ctx.update.callback_query);
+	// console.log(ctx.session.tracking);
 	await handlerSearch(ctx).catch(error => console.log(error));
-	// await handlerRequest(ctx).catch(error => console.log(error));
+	await handlerTracking(ctx).catch(error => console.log(error));
 })
 
 

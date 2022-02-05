@@ -6,18 +6,15 @@ const keyboards = require('../keyboards');
 async function handlerSearch(ctx) {
 	const userName = ctx.update.callback_query.from.username;
 	ctx.session.search ??= keyboards.search;
-	ctx.session.creatM = '@' + userName;
 	const cbData = ctx.update.callback_query.data; // callback_data
-	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
+	// await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
 
 	if (cbData === 'search') {
-		ctx.session = {
-			airport: '---',
-			resort: '---',
-			kids: '---',
-			persons: '---',
-			nigths: '---'
-		}
+		ctx.session.airport = '---';
+		ctx.session.resort = '---';
+		ctx.session.kids = '---';
+		ctx.session.persons = '---';
+		ctx.session.nigths = '---';
 		//при замене значения из модуля на keyboardSearch, смешиваются ответы из разных сессий!!
 		ctx.session.search = [
 			[
@@ -35,8 +32,6 @@ async function handlerSearch(ctx) {
 				{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
 			]
 		];
-		// console.log(ctx)
-		// await ctx.deleteMessage(ctx.update.callback_query.message.message_id);
 		await ctx.reply('Заполните форму запроса:', { reply_markup: { inline_keyboard: keyboards.search } });
 	}
 
@@ -58,9 +53,10 @@ async function handlerSearch(ctx) {
 	// обработка данных ввода
 
 	async function handlerData(ctx, dataInput) {
-		if (ctx.update.callback_query.data.includes(dataInput)) {
-			const data = ctx.update.callback_query.data;
+		if (cbData.includes(dataInput)) {
+			const data = cbData;
 			const dataKey = dataInput.split('_').join('')
+			//значение приходит с инлайн клавиатуры, оно находится после знака _
 			ctx.session[dataKey] = data.split(dataInput).join('');
 		}
 	}

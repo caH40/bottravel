@@ -1,9 +1,9 @@
 const Hotel = require('../models/Hotel');
 
-async function tracking(ctx) {
+async function tracking(ctx, filter) {
 	try {
 		// console.log(ctx.session)
-		const hotels = await Hotel.find();
+		const hotels = await Hotel.find(filter);
 		//проверка наличия документов в коллекции hotels
 		if (hotels[0]) {
 			let hotelsFiltered = '';
@@ -12,9 +12,11 @@ async function tracking(ctx) {
 				const nameHotel = hotelsSorted[i].name;
 				const nameUrl = hotelsSorted[i].url;
 				const nameDate = hotelsSorted[i].date;
+				const nameNight = hotelsSorted[i].night;
+				const nameAirport = hotelsSorted[i].airport;
 				const namePrice = hotelsSorted[i].prices[hotelsSorted[i].prices.length - 1].price;
 				// console.log(namePrice, nameDate, nameHotel);
-				hotelsFiltered = `${hotelsFiltered}${namePrice}р, ${nameDate}, <a href="${nameUrl}">${nameHotel}</a>\n`
+				hotelsFiltered = `${hotelsFiltered}${namePrice}р, ${nameDate},  ${nameNight} ночей, ${nameAirport}, <a href="${nameUrl}">${nameHotel.match(/.{1,20}/)}</a>\n`
 			}
 			const htmlDisPrev = { parse_mode: 'html', disable_web_page_preview: true };
 			await ctx.reply(hotelsFiltered, htmlDisPrev);
