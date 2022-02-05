@@ -23,7 +23,7 @@ const tracking = [
 		{ text: 'Количество детей', callback_data: 'kidsTrack' }
 	],
 	[
-		{ text: 'Количество ночей', callback_data: 'nigthsTrack' },
+		{ text: 'Количество ночей', callback_data: 'nightsTrack' },
 		{ text: 'Отель', callback_data: 'hotelTrack' }
 	],
 	[
@@ -40,7 +40,7 @@ const search = [
 		{ text: 'Количество детей', callback_data: 'kids' }
 	],
 	[
-		{ text: 'Количество ночей', callback_data: 'nigths' }
+		{ text: 'Количество ночей', callback_data: 'nights' }
 	],
 	[
 		{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
@@ -73,8 +73,8 @@ const kids = [
 ];
 const nights = [
 	[
-		{ text: '7 ночей', callback_data: 'nigths_7' },
-		{ text: '14 ночей', callback_data: 'nigths_14' },
+		{ text: '7 ночей', callback_data: 'nights_7' },
+		{ text: '14 ночей', callback_data: 'nights_14' },
 
 	]
 ];
@@ -104,8 +104,8 @@ const kidsTracking = [
 ];
 const nightsTracking = [
 	[
-		{ text: '7 ночей', callback_data: 'nigthsTracking_7' },
-		{ text: '14 ночей', callback_data: 'nigthsTracking_14' },
+		{ text: '7 ночей', callback_data: 'nightsTracking_7' },
+		{ text: '14 ночей', callback_data: 'nightsTracking_14' },
 
 	]
 ];

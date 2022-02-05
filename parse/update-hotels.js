@@ -35,7 +35,7 @@ async function addToDb(resultArr, url) {
 					resort: resort,
 					night: nights,
 					persons: persons,
-					persons: kids,
+					kids: kids,
 					date: date,
 					prices: priceNew,
 					lastUpdate: dateString

@@ -14,7 +14,7 @@ async function handlerSearch(ctx) {
 		ctx.session.resort = '---';
 		ctx.session.kids = '---';
 		ctx.session.persons = '---';
-		ctx.session.nigths = '---';
+		ctx.session.nights = '---';
 		//при замене значения из модуля на keyboardSearch, смешиваются ответы из разных сессий!!
 		ctx.session.search = [
 			[
@@ -26,7 +26,7 @@ async function handlerSearch(ctx) {
 				{ text: 'Количество детей', callback_data: 'kids' }
 			],
 			[
-				{ text: 'Количество ночей', callback_data: 'nigths' }
+				{ text: 'Количество ночей', callback_data: 'nights' }
 			],
 			[
 				{ text: 'Отправить запрос на обработку', callback_data: 'sendRequest' }
@@ -47,7 +47,7 @@ async function handlerSearch(ctx) {
 	if (cbData === 'persons') {
 		await ctx.reply('Количество взрослых:', { reply_markup: { inline_keyboard: keyboards.persons } });
 	}
-	if (cbData === 'nigths') {
+	if (cbData === 'nights') {
 		await ctx.reply('Количество ночей:', { reply_markup: { inline_keyboard: keyboards.nights } });
 	}
 	// обработка данных ввода
@@ -64,7 +64,7 @@ async function handlerSearch(ctx) {
 	await handlerData(ctx, 'resort_');
 	await handlerData(ctx, 'kids_');
 	await handlerData(ctx, 'persons_');
-	await handlerData(ctx, 'nigths_');
+	await handlerData(ctx, 'nights_');
 
 	// отправка итогового запроса поиска в БД
 	if (cbData === 'sendRequest') {

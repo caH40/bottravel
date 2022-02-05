@@ -20,7 +20,7 @@ async function outputSearch(ctx) {
 		ctx.session.search[1][1].text = 'Количество детей ✔️';
 		await ctx.reply('Выберите блок заполнения', { reply_markup: { inline_keyboard: ctx.session.search } }).catch((error) => console.log(error));
 	};
-	if (cbData.includes('nigths_')) {
+	if (cbData.includes('nights_')) {
 		ctx.session.search[2][0].text = 'Количество ночей ✔️';
 		await ctx.reply('Выберите блок заполнения', { reply_markup: { inline_keyboard: ctx.session.search } }).catch((error) => console.log(error));
 	};

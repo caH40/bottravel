@@ -18,7 +18,7 @@ async function outputTracking(ctx) {
 		ctx.session.tracking[1][1].text = 'Количество детей ✔️';
 		await ctx.reply('Заполните форму, все параметры являются необязательными:', { reply_markup: { inline_keyboard: ctx.session.tracking } }).catch((error) => console.log(error));
 	};
-	if (cbData.includes('nigthsTracking_')) {
+	if (cbData.includes('nightsTracking_')) {
 		ctx.session.tracking[2][0].text = 'Количество ночей ✔️';
 		await ctx.reply('Заполните форму, все параметры являются необязательными:', { reply_markup: { inline_keyboard: ctx.session.tracking } }).catch((error) => console.log(error));
 	};

@@ -20,7 +20,7 @@ async function handlerTracking(ctx) {
 				{ text: 'Количество детей', callback_data: 'kidsTrack' }
 			],
 			[
-				{ text: 'Количество ночей', callback_data: 'nigthsTrack' },
+				{ text: 'Количество ночей', callback_data: 'nightsTrack' },
 				{ text: 'Отель', callback_data: 'hotelTrack' }
 			],
 			[
@@ -41,7 +41,7 @@ async function handlerTracking(ctx) {
 	if (cbData === 'kidsTrack') {
 		await ctx.reply('Количество детей:', { reply_markup: { inline_keyboard: keyboards.kidsTracking } });
 	}
-	if (cbData === 'nigthsTrack') {
+	if (cbData === 'nightsTrack') {
 		await ctx.reply('Количество ночей:', { reply_markup: { inline_keyboard: keyboards.nightsTracking } });
 	}
 	// формирование инлайн клавиатуры из отелей, полученных из БД
@@ -63,7 +63,7 @@ async function handlerTracking(ctx) {
 	await handlerData(ctx, 'kidsTracking_');
 	await handlerData(ctx, 'personsTracking_');
 	await handlerData(ctx, 'hotelTracking_');
-	await handlerData(ctx, 'nigthsTracking_');
+	await handlerData(ctx, 'nightsTracking_');
 
 	// отправка итогового объявления на канал объявлений
 	if (cbData === 'sendRequestTrack') {

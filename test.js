@@ -25,16 +25,36 @@
 
 //сортировка названий
 
-const hotels = [
-	{ name: 'Shumi', price: '800' },
-	{ name: 'Arsi', price: '100' },
-	{ name: 'Monart', price: '250' },
-	{ name: 'Kleopatra', price: '900' },
-	{ name: 'Siri', price: '300' },
-	{ name: 'Eloptra', price: '200' },
-]
+// const hotels = [
+// 	{ name: 'Shumi', price: '800' },
+// 	{ name: 'Arsi', price: '100' },
+// 	{ name: 'Monart', price: '250' },
+// 	{ name: 'Kleopatra', price: '900' },
+// 	{ name: 'Siri', price: '300' },
+// 	{ name: 'Eloptra', price: '200' },
+// ]
 
-console.log(hotels)
-let hotelsSort = hotels.sort((a, b) => a.name - b.name)
+// console.log(hotels)
+// let hotelsSort = hotels.sort((a, b) => a.name - b.name)
 
-console.log(hotelsSort)
+// console.log(hotelsSort)
+
+session = {
+	hotelTracking: "checker1",
+
+
+}
+
+const filter = {};
+if (ctx.session.hotelTracking) { filter.name = ctx.session.hotelTracking }
+if (ctx.session.airportTracking) { filter.url = ctx.session.airportTracking }
+if (ctx.session.airportTracking) { filter.airport = ctx.session.airportTracking }
+if (ctx.session.resortTracking) { filter.resort = ctx.session.resortTracking }
+if (ctx.session.nightTracking) { filter.night = ctx.session.nightTracking }
+if (ctx.session.personsTracking) { filter.persons = ctx.session.personsTracking }
+if (ctx.session.kidsTracking) { filter.kids = ctx.session.kidsTracking }
+
+
+
+
+console.log(filter)
