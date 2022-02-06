@@ -36,4 +36,3 @@ async function updateDb() {
 setInterval(() => {
 	updateDb()
 }, millisecondsInTwentyMinutes);
-

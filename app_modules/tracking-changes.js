@@ -20,7 +20,7 @@ async function trackingChanges(bot) {
 						const nameAirport = hotels[i].airport;
 						const priceLast = hotels[i].prices[hotels[i].prices.length - 1]
 						const pricePreLast = hotels[i].prices[hotels[i].prices.length - 2]
-						console.log(priceLast)
+						// console.log(priceLast)
 						//!! Фильтр по цене, не больше 30тр, выставляется вручную
 						const priceNoMore = 30000;
 						if (hotels[i].prices.length > 1 && priceLast < priceNoMore) {

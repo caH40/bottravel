@@ -27,7 +27,6 @@ bot.catch((error, ctx) => {
 });
 
 bot.use(session());
-// let urlObj;
 
 const htmlDisPrev = { parse_mode: 'html', disable_web_page_preview: true };
 
@@ -47,9 +46,10 @@ bot.command('/main', async (ctx) => {
 	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
 	await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
 });
-// bot.command('/changes', async (ctx) => {
-
-// });
+bot.command('/description', async (ctx) => {
+	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
+	await ctx.reply(text.description, { parse_mode: 'html' });
+});
 
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
