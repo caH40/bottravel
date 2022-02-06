@@ -24,9 +24,3 @@ async function addUrl(url, ctx, day, month) {
 }
 
 module.exports = addUrl;
-
-
-
-
-
-// await ctx.reply('Запрос с данными параметрами уже есть в базе, для просмотра результата нажмите /request')

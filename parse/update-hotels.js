@@ -11,7 +11,7 @@ async function addToDb(resultArr, url) {
 		const kids = url.match(/adults-(.*)-kids/)[1];
 		let date = url.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
 		for (let i = 0; i < resultArr.length; i++) {
-			let price = resultArr[i].price.match(/[0-9]/g).join('');
+			let price = Number(resultArr[i].price.match(/[0-9]/g).join(''));
 			let priceNew = { price: price, date: dateNumber }
 			//обновление отелей
 			let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });

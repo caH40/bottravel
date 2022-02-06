@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
 const keyboards = require('./app_modules/keyboards');
-const tracking = require('./app_modules/request');
 const handlerSearch = require('./app_modules/menu/handler-search');
 const handlerTracking = require('./app_modules/menu/handler-tracking');
 const filters = require('./app_modules/menu/filters');
@@ -42,9 +41,20 @@ bot.help(async (ctx) => {
 
 // главное меню
 bot.command('/main', async (ctx) => {
-	ctx.session = {};
-	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
-	await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
+	try {
+		const userName = ctx.update.message.from.username;
+		if (userName) {
+			ctx.session = {};
+			await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
+			await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
+		} else {
+			await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
+			await ctx.reply(text.messageNeedUsername);
+		}
+	} catch (error) {
+		console.log(error)
+	}
+
 });
 bot.command('/description', async (ctx) => {
 	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
@@ -71,7 +81,7 @@ bot.launch()
 	.then(async () => {
 		setInterval(async () => {
 			await trackingChanges(bot);
-		}, 300000)
+		}, 1800000)
 	})
 	.catch(error => console.log(error));
 

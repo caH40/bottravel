@@ -18,13 +18,15 @@ async function trackingChanges(bot) {
 						const nameDate = hotels[i].date.split('.2022').join('');
 						const nameNight = hotels[i].night;
 						const nameAirport = hotels[i].airport;
-						const priceLast = hotels[i].prices[hotels[i].prices.length - 1]
-						const pricePreLast = hotels[i].prices[hotels[i].prices.length - 2]
-						// console.log(priceLast)
+						let priceLast = hotels[i].prices[hotels[i].prices.length - 1].price;
+						// console.log(priceLast);
 						//!! Фильтр по цене, не больше 30тр, выставляется вручную
 						const priceNoMore = 30000;
+						//проверка, чтобы количество элементов массива цен было 2 и более
 						if (hotels[i].prices.length > 1 && priceLast < priceNoMore) {
-							const result = priceLast - pricePreLast;
+							console.log('условие выполнено');
+							let pricePreLast = hotels[i].prices[hotels[i].prices.length - 2].price;
+							let result = priceLast - pricePreLast;
 							if (result < 0) {
 								hotelsFiltered = `${hotelsFiltered}${result}р, ${namePrice}р, ${nameDate},  ${nameNight} ночей, ${nameAirport}, <a href="${nameUrl}">${nameHotel.match(/.{1,20}/)}</a>\n`
 							}
