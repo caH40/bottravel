@@ -8,6 +8,7 @@ const tracking = require('./app_modules/request');
 const handlerSearch = require('./app_modules/menu/handler-search');
 const handlerTracking = require('./app_modules/menu/handler-tracking');
 const filters = require('./app_modules/menu/filters');
+const trackingList = require('./app_modules/tracking-list');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -49,11 +50,10 @@ bot.command('/main', async (ctx) => {
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
 	await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
-	// console.log(ctx.update.callback_query);
-	// console.log(ctx.session.tracking);
 	await handlerSearch(ctx).catch(error => console.log(error));
 	await handlerTracking(ctx).catch(error => console.log(error));
 	await filters(ctx).catch(error => console.log(error));
+	await trackingList(ctx).catch(error => console.log(error));
 })
 
 
