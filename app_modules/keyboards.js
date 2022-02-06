@@ -1,12 +1,15 @@
 const start = [
 	[
-		{ text: 'Показать список отслеживаемых отелей', callback_data: 'tracking' }
+		{ text: 'Показать список отелей', callback_data: 'tracking' }
 	],
 	[
-		{ text: 'Добавить список отслеживаемых отелей', callback_data: 'addTracking' }
+		{ text: 'Добавить фильтры отелей', callback_data: 'addTracking' }
 	],
 	[
-		{ text: 'Удалить список отслеживаемых отелей', callback_data: 'deleteTracking' }
+		{ text: 'Показать фильтры отелей', callback_data: 'requestTracking' }
+	],
+	[
+		{ text: 'Удалить фильтры отелей', callback_data: 'deleteTracking' }
 	],
 	[
 		{ text: 'Добавление поиска отелей в БД', callback_data: 'search' }

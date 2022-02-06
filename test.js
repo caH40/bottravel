@@ -39,22 +39,40 @@
 
 // console.log(hotelsSort)
 
-session = {
-	hotelTracking: "checker1",
+// session = {
+// 	hotelTracking: "checker1",
 
 
-}
+// }
 
-const filter = {};
-if (ctx.session.hotelTracking) { filter.name = ctx.session.hotelTracking }
-if (ctx.session.airportTracking) { filter.url = ctx.session.airportTracking }
-if (ctx.session.airportTracking) { filter.airport = ctx.session.airportTracking }
-if (ctx.session.resortTracking) { filter.resort = ctx.session.resortTracking }
-if (ctx.session.nightTracking) { filter.night = ctx.session.nightTracking }
-if (ctx.session.personsTracking) { filter.persons = ctx.session.personsTracking }
-if (ctx.session.kidsTracking) { filter.kids = ctx.session.kidsTracking }
+// const filter = {};
+// if (ctx.session.hotelTracking) { filter.name = ctx.session.hotelTracking }
+// if (ctx.session.airportTracking) { filter.url = ctx.session.airportTracking }
+// if (ctx.session.airportTracking) { filter.airport = ctx.session.airportTracking }
+// if (ctx.session.resortTracking) { filter.resort = ctx.session.resortTracking }
+// if (ctx.session.nightTracking) { filter.night = ctx.session.nightTracking }
+// if (ctx.session.personsTracking) { filter.persons = ctx.session.personsTracking }
+// if (ctx.session.kidsTracking) { filter.kids = ctx.session.kidsTracking }
+
+// console.log(filter)
+
+const filter = [
+	{
+		airport: 'Mineralnye.Vody',
+		resort: 'Alanya',
+		night: '7',
+		persons: '1',
+		kids: '0'
+	},
+	{ hotel: 'Arsi Hotel', night: '14' },
+	{ hotel: 'Arsi Hotel', night: '7' }
+]
 
 
 
+//необходимо удалить 2ой элемент
+let filterNew = filter.filter((element, index) =>
+	index !== 1
+)
 
-console.log(filter)
+console.log(filterNew)

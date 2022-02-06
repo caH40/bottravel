@@ -3,11 +3,11 @@ const { Telegraf, session } = require('telegraf');
 const mongoose = require('mongoose');
 
 const text = require('./app_modules/text');
-const getHotelName = require('./app_modules/keyboard-hotels');
 const keyboards = require('./app_modules/keyboards');
 const tracking = require('./app_modules/request');
 const handlerSearch = require('./app_modules/menu/handler-search');
 const handlerTracking = require('./app_modules/menu/handler-tracking');
+const filters = require('./app_modules/menu/filters');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -53,6 +53,7 @@ bot.on('callback_query', async (ctx) => {
 	// console.log(ctx.session.tracking);
 	await handlerSearch(ctx).catch(error => console.log(error));
 	await handlerTracking(ctx).catch(error => console.log(error));
+	await filters(ctx).catch(error => console.log(error));
 })
 
 

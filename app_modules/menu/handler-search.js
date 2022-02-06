@@ -6,8 +6,7 @@ const keyboards = require('../keyboards');
 async function handlerSearch(ctx) {
 	const userName = ctx.update.callback_query.from.username;
 	ctx.session.search ??= keyboards.search;
-	const cbData = ctx.update.callback_query.data; // callback_data
-	// await ctx.deleteMessage(ctx.update.callback_query.message.message_id).catch(error => console.log(error));
+	const cbData = ctx.update.callback_query.data;
 
 	if (cbData === 'search') {
 		ctx.session.airport = '---';
