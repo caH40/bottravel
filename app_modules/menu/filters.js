@@ -7,21 +7,26 @@ async function filters(ctx) {
 	try {
 		if (cbData === 'requestTracking') {
 			const user = await User.findOne({ userId: userId });
-			const filter = user.filter;
-			//проверка наличия фильтров у юзера
-			if (filter[0]) {
-				filter.forEach(async element => {
-					let airport = element.airport ? `Город вылета: ${element.airport}\n` : '';
-					let resort = element.resort ? `Курорт: ${element.resort}\n` : '';
-					let night = element.night ? `Количество ночей: ${element.night}\n` : '';
-					let persons = element.persons ? `Количество взрослых: ${element.persons}\n` : '';
-					let kids = element.kids ? `Количество детей: ${element.kids}\n` : '';
-					let hotel = element.hotel ? `Отель: ${element.hotel}\n` : '';
-					let message = `${airport}${resort}${persons}${kids}${night}${hotel}`;
-					await ctx.reply(message);
-				})
+			if (user) {
+				const filter = user.filter;
+				//проверка наличия фильтров у юзера
+				if (filter[0]) {
+					filter.forEach(async element => {
+						let airport = element.airport ? `Город вылета: ${element.airport}\n` : '';
+						let resort = element.resort ? `Курорт: ${element.resort}\n` : '';
+						let night = element.night ? `Количество ночей: ${element.night}\n` : '';
+						let persons = element.persons ? `Количество взрослых: ${element.persons}\n` : '';
+						let kids = element.kids ? `Количество детей: ${element.kids}\n` : '';
+						let hotel = element.hotel ? `Отель: ${element.hotel}\n` : '';
+						let message = `${airport}${resort}${persons}${kids}${night}${hotel}`;
+						// если не выбран ни один фильтр, то отправляем сообщение 'Поиск по всем фильтрам'
+						await ctx.reply(message ? message : 'Поиск по всем фильтрам');
+					})
+				} else {
+					await ctx.reply('У Вас нет фильтров для мониторинга цен, выберите пункт меню "Добавить фильтры отелей"');
+				}
 			} else {
-				await ctx.reply('У Вас нет актуальных фильтров, Вы не отслеживаете изменение цен.');
+				await ctx.reply('У Вас нет фильтров для мониторинга цен, выберите пункт меню "Добавить фильтры отелей"');
 			}
 		}
 	} catch (error) {
@@ -31,23 +36,29 @@ async function filters(ctx) {
 	try {
 		if (cbData === 'deleteTracking') {
 			const user = await User.findOne({ userId: userId });
-			const filter = user.filter;
-			//проверка наличия фильтров у юзера
-			let keyboardFilter = [];
-			if (filter[0]) {
-				for (let i = 0; i < filter.length; i++) {
-					let airport = filter[i].airport ? `${filter[i].airport},` : '';
-					let resort = filter[i].resort ? `${filter[i].resort},` : '';
-					let night = filter[i].night ? `night: ${filter[i].night},` : '';
-					let persons = filter[i].persons ? `adult: ${filter[i].persons},` : '';
-					let kids = filter[i].kids ? `kid: ${filter[i].kids},` : '';
-					let hotel = filter[i].hotel ? `hotel: ${filter[i].hotel},` : '';
-					let message = `${airport}${resort}${persons}${kids}${night}${hotel}`;
-					keyboardFilter.push([{ text: message, callback_data: `filter_${i}` }])
+			if (user) {
+				const filter = user.filter;
+				//проверка наличия фильтров у юзера
+				let keyboardFilter = [];
+				if (filter[0]) {
+					for (let i = 0; i < filter.length; i++) {
+						let airport = filter[i].airport ? `${filter[i].airport},` : '';
+						let resort = filter[i].resort ? `${filter[i].resort},` : '';
+						let night = filter[i].night ? `night: ${filter[i].night},` : '';
+						let persons = filter[i].persons ? `adult: ${filter[i].persons},` : '';
+						let kids = filter[i].kids ? `kid: ${filter[i].kids},` : '';
+						let hotel = filter[i].hotel ? `hotel: ${filter[i].hotel},` : '';
+						let message = `${airport}${resort}${persons}${kids}${night}${hotel}`;
+						// если не выбран ни один фильтр, то отправляем сообщение 'Поиск по всем фильтрам'
+						message = message ? message : 'Не выбрали фильтры, поиск по всем параметрам';
+						keyboardFilter.push([{ text: message, callback_data: `filter_${i}` }])
+					}
+					await ctx.reply('Выберите фильтр для удаления:', { reply_markup: { inline_keyboard: keyboardFilter } })
+				} else {
+					await ctx.reply('У Вас нет фильтров для мониторинга цен, выберите пункт меню "Добавить фильтры отелей"');
 				}
-				await ctx.reply('Выберите фильтр для удаления:', { reply_markup: { inline_keyboard: keyboardFilter } })
 			} else {
-				await ctx.reply('У Вас нет актуальных фильтров, Вы не отслеживаете изменение цен.');
+				await ctx.reply('У Вас нет фильтров для мониторинга цен, выберите пункт меню "Добавить фильтры отелей"');
 			}
 		}
 	} catch (error) {
@@ -71,7 +82,6 @@ async function filters(ctx) {
 	} catch (error) {
 		console.log(error);
 	}
-
 }
 
 module.exports = filters;

@@ -9,6 +9,7 @@ const handlerSearch = require('./app_modules/menu/handler-search');
 const handlerTracking = require('./app_modules/menu/handler-tracking');
 const filters = require('./app_modules/menu/filters');
 const trackingList = require('./app_modules/tracking-list');
+const trackingChanges = require('./app_modules/tracking-changes');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -46,6 +47,9 @@ bot.command('/main', async (ctx) => {
 	await ctx.deleteMessage(ctx.update.message.message_id).catch(error => console.log(error));
 	await ctx.reply('Заполните форму:', { reply_markup: { inline_keyboard: keyboards.start } });
 });
+// bot.command('/changes', async (ctx) => {
+
+// });
 
 // обработка всех нажатий инлайн кнопок
 bot.on('callback_query', async (ctx) => {
@@ -63,6 +67,11 @@ bot.launch()
 	.then(async () => {
 		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...')
 			.catch(error => console.log(error));
+	})
+	.then(async () => {
+		setInterval(async () => {
+			await trackingChanges(bot);
+		}, 300000)
 	})
 	.catch(error => console.log(error));
 

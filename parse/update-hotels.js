@@ -11,13 +11,12 @@ async function addToDb(resultArr, url) {
 		const kids = url.match(/adults-(.*)-kids/)[1];
 		let date = url.match(/\d\d\.\d\d\.\d\d\d\d/)[0];
 		for (let i = 0; i < resultArr.length; i++) {
-			// let date = resultArr[i].info.match(/\n(.*)/)[1]; // берем дату из парс-данных
 			let price = resultArr[i].price.match(/[0-9]/g).join('');
 			let priceNew = { price: price, date: dateNumber }
 			//обновление отелей
 			let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
 			if (hotel) {
-				console.log('обновление цены');
+				console.log(dateString, 'обновление цены');
 				for (let i = 0; i < resultArr.length; i++) {
 					let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
 					hotel.prices.push(priceNew)
@@ -41,13 +40,12 @@ async function addToDb(resultArr, url) {
 					lastUpdate: dateString
 				})
 				//saved содержит все сохраненные документы
-				let hotelsFromDb = await hotelNew.save().then(console.log('added to database...'))
+				await hotelNew.save().then(console.log(dateString, 'added to database...'))
 			}
 		}
 	} catch (error) {
 		console.log(error);
 	}
-
 }
 
 module.exports = addToDb;

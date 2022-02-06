@@ -13,8 +13,8 @@ mongoose.connect(process.env.MONGODB)
 		console.log(error);
 	});
 
-const millisecondsInTenSecond = 5000;
-const millisecondsInTwentyMinutes = 300000;
+const millisecondsInTenSecond = 10000;
+const millisecondsInTwentyMinutes = 600000;
 // const millisecondsInTwentyMinutes = 1200000;
 
 async function updateDb() {

@@ -3,6 +3,7 @@ const Hotel = require('../models/Hotel');
 
 async function getKeyboardHotels() {
 	const hotels = await Hotel.find();
+
 	let hotelsSort = hotels.sort((a, b) => a.hotel - b.hotel)
 	let hotelNames = [];
 	hotelsSort.forEach(element => {

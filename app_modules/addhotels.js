@@ -7,7 +7,7 @@ async function addToDb(resultArr, url) {
 	let hotelNew;
 	for (let i = 0; i < resultArr.length; i++) {
 		let date = resultArr[i].info.match(/\n(.*)/)[1];
-		let price = resultArr[i].price.match(/[0-9]/g).join('');
+		let price = Number(resultArr[i].price.match(/[0-9]/g).join(''));
 		let priceNew = { price: price, date: dateNumber }
 
 		//обновление отелей
