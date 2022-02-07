@@ -29,7 +29,6 @@ async function hotelsList(ctx, filters) {
 				}
 				const htmlDisPrev = { parse_mode: 'html', disable_web_page_preview: true };
 				await ctx.reply(`Фильтр №${filterIndex}\n${hotelsFiltered}`, htmlDisPrev);
-
 			} else {
 				await ctx.reply('Что то пошло не так, база данных пустая...');
 			}

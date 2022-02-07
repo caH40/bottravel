@@ -9,22 +9,25 @@ async function trackingChanges(bot) {
 				let userId = elementUser.userId;
 				let filters = elementUser.filter; // filters может быть  пустой массив []
 				filters.forEach(async elementFilter => {
+					elementFilter.updated = true;
+					// console.log(elementFilter)
 					let hotels = await Hotel.find(elementFilter); //массив из отелей
 					let hotelsFiltered = '';
 					for (let i = 0; i < hotels.length; i++) {
-						const nameHotel = hotels[i].hotel;
-						const nameUrl = hotels[i].url;
-						const namePrice = hotels[i].prices[hotels[i].prices.length - 1].price;
-						const nameDate = hotels[i].date.split('.2022').join('');
-						const nameNight = hotels[i].night;
-						const nameAirport = hotels[i].airport;
+						let x = await Hotel.findOneAndUpdate({ _id: hotels[i]._id }, { $set: { updated: false } });
+						console.log(x)
+						let nameHotel = hotels[i].hotel;
+						let nameUrl = hotels[i].url;
+						let namePrice = hotels[i].prices[hotels[i].prices.length - 1].price;
+						let nameDate = hotels[i].date.split('.2022').join('');
+						let nameNight = hotels[i].night;
+						let nameAirport = hotels[i].airport;
 						let priceLast = hotels[i].prices[hotels[i].prices.length - 1].price;
 						// console.log(priceLast);
 						//!! Фильтр по цене, не больше 30тр, выставляется вручную
-						const priceNoMore = 30000;
+						const priceNoMore = 60000;
 						//проверка, чтобы количество элементов массива цен было 2 и более
 						if (hotels[i].prices.length > 1 && priceLast < priceNoMore) {
-							console.log('условие выполнено');
 							let pricePreLast = hotels[i].prices[hotels[i].prices.length - 2].price;
 							let result = priceLast - pricePreLast;
 							if (result < 0) {

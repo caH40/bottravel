@@ -10,6 +10,7 @@ const hotelSchema = new Schema({
 	kids: { type: Number },
 	date: { type: String },
 	prices: { type: Array },
+	updated: { type: Boolean },
 	lastUpdate: { type: String }
 });
 

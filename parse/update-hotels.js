@@ -14,21 +14,22 @@ async function addToDb(resultArr, url) {
 			let price = Number(resultArr[i].price.match(/[0-9]/g).join(''));
 			let priceNew = { price: price, date: dateNumber }
 			//обновление отелей
-			let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
+			//находим отель по уникальным параметрам
+			let hotel = await Hotel.findOne({
+				hotel: resultArr[i].hotelNameFromParse,
+				url: url
+			});
 			if (hotel) {
-				console.log(dateString, 'обновление цены');
-				for (let i = 0; i < resultArr.length; i++) {
-					let hotel = await Hotel.findOne({ hotel: resultArr[i].hotel, date: date });
-					hotel.prices.push(priceNew)
-					await Hotel.findOneAndUpdate(
-						{ hotel: resultArr[i].hotel },
-						{ $set: { lastUpdate: dateString, prices: hotel.prices } }
-					);
-				}
+
+				hotel.prices.push(priceNew)
+				await Hotel.findOneAndUpdate(
+					{ hotel: resultArr[i].hotelNameFromParse },
+					{ $set: { lastUpdate: dateString, prices: hotel.prices, updated: true } }
+				).then(console.log(dateString, 'обновление цены'));
 				//добавление отелей
 			} else {
 				hotelNew = await Hotel({
-					hotel: resultArr[i].hotel,
+					hotel: resultArr[i].hotelNameFromParse,
 					url: url,
 					airport: airport,
 					resort: resort,
@@ -37,6 +38,7 @@ async function addToDb(resultArr, url) {
 					kids: kids,
 					date: date,
 					prices: priceNew,
+					updated: false,
 					lastUpdate: dateString
 				})
 				//saved содержит все сохраненные документы
