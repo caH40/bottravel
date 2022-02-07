@@ -81,7 +81,7 @@ bot.launch()
 	.then(async () => {
 		setInterval(async () => {
 			await trackingChanges(bot);
-		}, 60000)
+		}, 600000)
 	})
 	.catch(error => console.log(error));
 
