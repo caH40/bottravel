@@ -14,8 +14,7 @@ async function trackingChanges(bot) {
 					let hotels = await Hotel.find(elementFilter); //массив из отелей
 					let hotelsFiltered = '';
 					for (let i = 0; i < hotels.length; i++) {
-						let x = await Hotel.findOneAndUpdate({ _id: hotels[i]._id }, { $set: { updated: false } });
-						console.log(x)
+						await Hotel.findOneAndUpdate({ _id: hotels[i]._id }, { $set: { updated: false } });
 						let nameHotel = hotels[i].hotel;
 						let nameUrl = hotels[i].url;
 						let namePrice = hotels[i].prices[hotels[i].prices.length - 1].price;

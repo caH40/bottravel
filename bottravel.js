@@ -28,6 +28,7 @@ bot.catch((error, ctx) => {
 bot.use(session());
 
 const htmlDisPrev = { parse_mode: 'html', disable_web_page_preview: true };
+const millisecondsInTenMinutes = 60000;
 
 bot.start(async (ctx) => {
 	const userName = ctx.update.message.from.username;
@@ -81,7 +82,7 @@ bot.launch()
 	.then(async () => {
 		setInterval(async () => {
 			await trackingChanges(bot);
-		}, 600000)
+		}, millisecondsInTenMinutes)
 	})
 	.catch(error => console.log(error));
 

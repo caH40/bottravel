@@ -20,7 +20,6 @@ async function addToDb(resultArr, url) {
 				url: url
 			});
 			if (hotel) {
-
 				hotel.prices.push(priceNew)
 				await Hotel.findOneAndUpdate(
 					{ hotel: resultArr[i].hotelNameFromParse },
