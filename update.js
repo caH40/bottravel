@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB)
 	});
 
 const millisecondsInTenSecond = 10000;
-const millisecondsInTwentyMinutes = 1200000;
+const millisecondsInThirtyMinutes = 1800000;
 
 async function updateDb() {
 	try {
@@ -25,7 +25,7 @@ async function updateDb() {
 			setTimeout(async () => {
 				console.log(`${new Date().toLocaleString()}- i=${i} ${element.url}`)
 				await parse(element.url);
-			}, millisecondsInTenSecond * i);
+			}, millisecondsInThirtyMinutes * i);
 		})
 	} catch (error) {
 		console.log(error)
