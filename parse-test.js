@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
 
-const updateHotels = require('./update-hotels')
-
+// const updateHotels = require('./update-hotels')
+const url = 'https://level.travel/search/Mineralnye.Vody-RU-to-Alanya-TR-departure-11.03.2022-for-7-nights-1-adults-0-kids-1..5-stars?sort_by=price,asc'
+parse(url)
 async function parse(url) {
 	try {
 		const resortUrl = url.match(/to-(.*)-TR/)[1];
@@ -31,13 +32,19 @@ async function parse(url) {
 
 				// const selectorHotelInfo = 'div > div > div > div:nth-child(2) > div > div:nth-child(5) > div > div:nth-child(2) > div > div ';
 				// let info = element.querySelector(selectorHotelInfo).innerText;
+
 				result.push({ hotelNameFromParse, price, resort })
 			})
 			return result;
 		});
+		// await updateHotels(resultArr, url);
+		// console.log(resultArr)
 		const resultArrFiltered = resultArr.filter(element => element.resort.includes(resortTranslator[resortUrl]))
-		await updateHotels(resultArrFiltered, url);
+		console.log(resultArrFiltered)
+
+
 		await browser.close();
+		// return resultArr;
 	} catch (error) {
 		console.log(error)
 	}

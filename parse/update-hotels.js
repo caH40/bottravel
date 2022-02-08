@@ -1,6 +1,7 @@
 const Hotel = require('../models/Hotel');
 
 async function addToDb(resultArr, url) {
+	console.log(resultArr)
 	try {
 		const dateString = new Date().toLocaleString();
 		const dateNumber = new Date().getTime();
