@@ -25,7 +25,7 @@ async function updateDb() {
 			setTimeout(async () => {
 				console.log(`${new Date().toLocaleString()}- i=${i} ${element.url}`)
 				await parse(element.url);
-			}, millisecondsInThirtyMinutes * i);
+			}, millisecondsInTenSecond * i);
 		})
 	} catch (error) {
 		console.log(error)
@@ -34,4 +34,4 @@ async function updateDb() {
 
 setInterval(() => {
 	updateDb()
-}, millisecondsInTwentyMinutes);
+}, millisecondsInThirtyMinutes);
