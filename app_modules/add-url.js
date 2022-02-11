@@ -2,23 +2,20 @@ const Url = require('../models/Url');
 
 async function addUrl(url, day, month) {
 	try {
+		const dateTravel = new Date(`${new Date().getFullYear()}-${month}-${day}`).getTime();
 		const dateString = new Date().toLocaleString();
-		const urlSearch = await Url.findOne({ url: url });
-		//фильтрация недействительной даты (дата ранее сегодняшнего дня)
-		var incorrectDate;
-		const dayNow = new Date().getDate();
-		const monthNow = new Date().getMonth() + 1;
-		if ((day < dayNow + 1) && month == monthNow) {
-			incorrectDate = true
-		} else {
-			incorrectDate = false
-		}
+		const urlExists = await Url.findOne({ url: url });
 		//если уже есть url в базе, или дата не корректна то не добавлять
-		if (urlSearch || incorrectDate) {
+		if (urlExists) {
 			console.log('url есть в БД, или некорректная дата')
 		}
 		else {
-			const urlNew = await new Url({ url: url, lastUpdate: dateString });
+			const urlNew = await new Url({
+				url: url,
+				date: dateTravel,
+				lastUpdate: dateString
+			}
+			);
 			await urlNew.save();
 			// console.log('url добавлен...')
 		}

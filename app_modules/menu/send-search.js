@@ -10,11 +10,13 @@ async function sendRequest(ctx) {
 			condition = condition || (ctx.session[element] === '---')
 		})
 
+		const dayToday = new Date().getDate();
+		const monthToday = new Date().getMonth() + 1;
 		if (condition) {
 			await ctx.reply('Не все поля заполнены!!!', { reply_markup: { inline_keyboard: keyboards.back } })
 		} else {
-			for (let month = 2; month < 4; month++) {
-				for (let day = 1; day < 31; day++) {
+			for (let month = monthToday; month < monthToday + 2; month++) {
+				for (let day = dayToday; day < 31; day++) {
 					let url = `https://level.travel/search/${ctx.session.airport}-RU-to-${ctx.session.resort}-TR-departure-${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.2022-for-${ctx.session.nights}-nights-${ctx.session.persons}-adults-${ctx.session.kids}-kids-1..5-stars?sort_by=price,asc`;
 					await addUrl(url, day, month)
 				}

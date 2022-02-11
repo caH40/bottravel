@@ -9,6 +9,7 @@ const handlerTracking = require('./app_modules/menu/handler-tracking');
 const filters = require('./app_modules/menu/filters');
 const trackingList = require('./app_modules/tracking-list');
 const trackingChanges = require('./app_modules/tracking-changes');
+const cleanUrl = require('./app_modules/clean-url');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -28,6 +29,7 @@ bot.catch((error, ctx) => {
 bot.use(session());
 
 const htmlDisPrev = { parse_mode: 'html', disable_web_page_preview: true };
+const millisecondsInDay = 86400000;
 const millisecondsInTenMinutes = 600000;
 
 bot.start(async (ctx) => {
@@ -78,6 +80,11 @@ bot.launch()
 	.then(async () => {
 		await bot.telegram.sendMessage(process.env.MY_TELEGRAM_ID, 'restart...')
 			.catch(error => console.log(error));
+	})
+	.then(() => {
+		setInterval(async () => {
+			cleanUrl();
+		}, millisecondsInDay)
 	})
 	.then(async () => {
 		setInterval(async () => {
