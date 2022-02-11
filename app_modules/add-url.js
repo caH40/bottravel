@@ -5,7 +5,7 @@ async function addUrl(url, day, month) {
 		const dateString = new Date().toLocaleString();
 		const urlSearch = await Url.findOne({ url: url });
 		//фильтрация недействительной даты (дата ранее сегодняшнего дня)
-		let incorrectDate;
+		var incorrectDate;
 		const dayNow = new Date().getDate();
 		const monthNow = new Date().getMonth() + 1;
 		if ((day < dayNow + 1) && month == monthNow) {
@@ -13,7 +13,7 @@ async function addUrl(url, day, month) {
 		} else {
 			incorrectDate = false
 		}
-		//если уже есть url в базе, то не добавлять
+		//если уже есть url в базе, или дата не корректна то не добавлять
 		if (urlSearch || incorrectDate) {
 			console.log('url есть в БД, или некорректная дата')
 		}

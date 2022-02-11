@@ -15,18 +15,11 @@ async function addToDb(resultArr, url) {
 			let priceNew = { price: price, date: dateNumber }
 			//обновление отелей
 			//находим отель по уникальным параметрам
-			let hotel = await Hotel.findOne({
-				hotel: resultArr[i].hotelNameFromParse,
-				url: url
-			});
-			if (hotel) {
-				hotel.prices.push(priceNew)
-				await Hotel.findOneAndUpdate(
-					{ hotel: resultArr[i].hotelNameFromParse },
-					{ $set: { lastUpdate: dateString, prices: hotel.prices, updated: true } }
-				).then(console.log(dateString, 'обновление цены'));
-				//добавление отелей
-			} else {
+			const hotelExists = await Hotel.findOneAndUpdate(
+				{ hotel: resultArr[i].hotelNameFromParse, url: url },
+				{ $set: { lastUpdate: dateString, updated: true }, $push: { prices: priceNew } }
+			).then(console.log(dateString, 'обновление цены'));;
+			if (!hotelExists) {
 				hotelNew = await Hotel({
 					hotel: resultArr[i].hotelNameFromParse,
 					url: url,
@@ -40,7 +33,6 @@ async function addToDb(resultArr, url) {
 					updated: false,
 					lastUpdate: dateString
 				})
-				//saved содержит все сохраненные документы
 				await hotelNew.save().then(console.log(dateString, 'added to database...'))
 			}
 		}

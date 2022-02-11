@@ -2,13 +2,13 @@ const Hotel = require('../models/Hotel')
 
 async function hotelsList(ctx, filters) {
 	try {
-		let filterIndex = 0;
+		var filterIndex = 0;
 		filters.forEach(async filter => {
 			const hotels = await Hotel.find(filter);
 			//проверка наличия документов в коллекции hotels
 			if (hotels[0]) {
 				filterIndex++;
-				let hotelsFiltered = '';
+				var hotelsFiltered = '';
 				let hotelsSorted = hotels.sort((a, b) => a.prices[a.prices.length - 1].price - b.prices[b.prices.length - 1].price);
 				// определение количества отелей в списке результата поиска - iteration
 				let iteration;

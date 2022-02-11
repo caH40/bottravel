@@ -2,15 +2,11 @@ const User = require('../models/User');
 //добавление пользователей запросов (телеграмм)
 async function addUser(ctx, userId, filter) {
 	try {
-		const user = await User.findOne({ userId: userId });
+		const userExists = await User.findOneAndUpdate({ userId: userId }, { $addToSet: { filter: filter } })
+			.then(await ctx.reply('Фильтр добавлен.'))
+			.catch(error => console.log('Ошибка в обновлении User' + error));
 		//проверка существования user
-		if (user) {
-			let filterForUser = user.filter;
-			filterForUser.push(filter);
-			await User.findOneAndUpdate({ userId: userId }, { $set: { filter: filterForUser } })
-				.then(await ctx.reply('Фильтр добавлен.'))
-				.catch(error => console.log('Ошибка в обновлении User' + error))
-		} else {
+		if (!userExists) {
 			const userNew = await User({
 				userName: ctx.update.callback_query.from.username,
 				userId: userId,
